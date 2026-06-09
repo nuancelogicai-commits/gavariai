@@ -3,26 +3,972 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gavari AI</title>
+  <title>Gavari AI — AI App Development</title>
+  <meta name="description" content="Gavari AI builds AI-powered applications that solve real problems. We are an AI strategy and app development firm based in Wyoming.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #000000;
+      --surface: #111111;
+      --card:    #1A1A1A;
+      --border:  #2A2A2A;
+      --coral:   #FFFFFF;
+      --gold:    #CCCCCC;
+      --white:   #FFFFFF;
+      --muted:   #888888;
+      --font-display: 'Syne', sans-serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      background: #000;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      height: 100vh;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(8,7,7,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--coral); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: #FFFFFF;
+      color: #000000 !important;
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      transition: opacity 0.2s !important;
+    }
+
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── PAGES ── */
+    .page { display: none; padding-top: 80px; }
+    .page.active { display: block; }
+
+    /* ── HOME HERO ── */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--coral);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 96px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--coral);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: #FFFFFF;
+      color: #000000;
+      padding: 14px 32px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 15px;
+      text-decoration: none;
+      transition: border-color 0.2s;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover { border-color: var(--muted); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 48px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      padding: 96px 48px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--coral);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .section-body {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 580px;
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* ── WHAT WE DO ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      margin-top: 64px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--surface);
+      padding: 40px 36px;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .service-card:hover { background: var(--card); }
+
+    .service-num {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--border);
+      margin-bottom: 20px;
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .service-desc {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── PRODUCT SPOTLIGHT ── */
+    .spotlight {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      margin-top: 64px;
+    }
+
+    .spotlight-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--coral);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .spotlight h3 {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      line-height: 1.05;
+    }
+
+    .spotlight-desc {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
+
+    .spotlight-stats {
+      display: flex;
+      gap: 40px;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--coral);
+      letter-spacing: -0.02em;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 4px;
+    }
+
+    .spotlight-visual {
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    h1 {
-      font-size: 3rem;
+
+    .phone-mock {
+      width: 200px;
+      height: 400px;
+      background: var(--card);
+      border-radius: 32px;
+      border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      position: relative;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    }
+
+    .phone-mock::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      width: 60px; height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .mock-verdict {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: var(--coral);
+    }
+
+    .mock-score {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .mock-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .mock-line {
+      width: 120px;
+      height: 2px;
+      background: #FFFFFF;
+      border-radius: 1px;
+    }
+
+    /* ── APPROACH ── */
+    .approach-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+      margin-top: 64px;
+    }
+
+    .approach-item {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .approach-icon {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .approach-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .approach-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
       font-weight: 300;
+    }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 48px;
+      text-align: center;
+    }
+
+    .cta-band h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .cta-band p {
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    /* ── ABOUT PAGE ── */
+    .about-hero {
+      padding: 80px 48px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 32px;
+      max-width: 800px;
+    }
+
+    .about-hero h1 em {
+      font-style: normal;
+      color: var(--coral);
+    }
+
+    .about-hero p {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 560px;
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .about-col {
+      padding: 64px 48px;
+      border-right: 1px solid var(--border);
+    }
+
+    .about-col:last-child { border-right: none; }
+
+    .about-col h2 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .about-col p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+
+    /* ── FOUNDER ── */
+    .founder-section {
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .founder-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 56px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 48px;
+      align-items: start;
+      max-width: 900px;
+    }
+
+    .founder-avatar {
+      width: 100px; height: 100px;
+      background: linear-gradient(135deg, #FFFFFF, #AAAAAA);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 800;
+      color: #000000;
+      flex-shrink: 0;
+    }
+
+    .founder-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .founder-title {
+      color: var(--coral);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .founder-bio {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .founder-bio + .founder-bio { margin-top: 12px; }
+
+    /* ── VALUES ── */
+    .values-section {
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2px;
+      margin-top: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .value-card {
+      background: var(--card);
+      padding: 36px 28px;
+    }
+
+    .value-word {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--coral);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .value-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      margin-top: 48px;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .contact-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .contact-row-label {
+      font-size: 11px;
+      font-weight: 600;
       letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      min-width: 80px;
+    }
+
+    .contact-row-val {
+      font-size: 15px;
+      color: var(--white);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-logo span { color: var(--coral); }
+
+    footer p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 24px; }
+      .section { padding: 64px 24px; }
+      .divider { margin: 0 24px; }
+      .spotlight { grid-template-columns: 1fr; padding: 36px 28px; gap: 40px; }
+      .spotlight-visual { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-col { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 24px; }
+      .about-hero { padding: 48px 24px; }
+      .founder-section { padding: 48px 24px; }
+      .founder-card { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; }
+      .values-section { padding: 48px 24px; }
+      .contact-section { padding: 48px 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .cta-band { padding: 64px 24px; }
+      footer { padding: 32px 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
     }
   </style>
 </head>
 <body>
-  <h1>Gavari AI</h1>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo" onclick="showPage('home')">GAVARI<span>.</span>AI</a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+      <li><a href="#" class="nav-cta" onclick="showPage('about'); setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),100)">Get in Touch</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══════════════════ HOME PAGE ══════════════════ -->
+  <div id="home" class="page active">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="hero-eyebrow">AI App Development Studio</p>
+      <h1>We build apps that<br><em>think for you.</em></h1>
+      <p class="hero-sub">Gavari AI is an AI strategy and application development firm. We take ideas from concept to product — fast, focused, and built to last.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary" onclick="showPage('about'); setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),100)">Work With Us</a>
+        <a href="#" class="btn-ghost" onclick="showPage('about')">About Gavari AI</a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SERVICES -->
+    <section class="section">
+      <p class="section-label">What We Do</p>
+      <h2 class="section-title">From strategy to shipped product.</h2>
+      <p class="section-body">We work with founders and companies who want to build with AI — and need a team that understands both the technology and the business.</p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <p class="service-num">01</p>
+          <h3 class="service-title">AI App Development</h3>
+          <p class="service-desc">We build consumer and enterprise applications powered by the latest vision, language, and multimodal AI models. From concept to App Store — end to end.</p>
+        </div>
+        <div class="service-card">
+          <p class="service-num">02</p>
+          <h3 class="service-title">Digital Strategy</h3>
+          <p class="service-desc">We help businesses understand where AI creates real competitive advantage — and build a roadmap to get there without wasted time or budget.</p>
+        </div>
+        <div class="service-card">
+          <p class="service-num">03</p>
+          <h3 class="service-title">Product Architecture</h3>
+          <p class="service-desc">Solid foundations built for scale. We design backend systems, API layers, and AI inference pipelines that perform under real-world conditions.</p>
+        </div>
+        <div class="service-card">
+          <p class="service-num">04</p>
+          <h3 class="service-title">Growth Infrastructure</h3>
+          <p class="service-desc">Automated marketing systems, affiliate networks, and content engines that compound — so your distribution grows while you build.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PRODUCT SPOTLIGHT -->
+    <section class="section">
+      <p class="section-label">Flagship Product</p>
+      <h2 class="section-title">Built in-house. Launching now.</h2>
+      <p class="section-body">Gavari AI's first consumer product — a live example of what we build for clients.</p>
+
+      <div class="spotlight">
+        <div class="spotlight-content">
+          <span class="spotlight-badge">Now in Review</span>
+          <h3>Authentica</h3>
+          <p class="spotlight-desc">AI-powered authentication for sneakers and apparel. Point your camera, get a verdict in seconds. No waiting, no experts, no guesswork. Real or fake — Authentica knows.</p>
+          <div class="spotlight-stats">
+            <div>
+              <span class="stat-num">AI</span>
+              <p class="stat-label">Vision Engine</p>
+            </div>
+            <div>
+              <span class="stat-num">$1T+</span>
+              <p class="stat-label">Counterfeit Market</p>
+            </div>
+            <div>
+              <span class="stat-num">&lt;15s</span>
+              <p class="stat-label">Avg. Verdict Time</p>
+            </div>
+          </div>
+        </div>
+        <div class="spotlight-visual">
+          <div class="phone-mock">
+            <p class="mock-verdict">AUTHENTIC</p>
+            <p class="mock-score">96%</p>
+            <div class="mock-line"></div>
+            <p class="mock-label">CONFIDENCE SCORE</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- APPROACH -->
+    <section class="section">
+      <p class="section-label">How We Work</p>
+      <h2 class="section-title">AI-native from day one.</h2>
+      <p class="section-body">We don't bolt AI onto existing processes. We build with it at the foundation — which means faster development, smarter products, and better outcomes.</p>
+
+      <div class="approach-grid">
+        <div class="approach-item">
+          <div class="approach-icon">⚡</div>
+          <h3 class="approach-title">Move Fast</h3>
+          <p class="approach-desc">We operate lean and ship quickly. Weeks from concept to TestFlight. Months from idea to market.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-icon">🎯</div>
+          <h3 class="approach-title">Solve Real Problems</h3>
+          <p class="approach-desc">Every product we build addresses a genuine market need — not a tech demo. If there's no problem, there's no product.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-icon">🔒</div>
+          <h3 class="approach-title">Build to Last</h3>
+          <p class="approach-desc">Clean architecture, no shortcuts. Systems that scale from 100 users to 100,000 without a rebuild.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-icon">📈</div>
+          <h3 class="approach-title">Grow with Data</h3>
+          <p class="approach-desc">Analytics-first from day one. Every decision is informed by real user behavior, not assumptions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <div class="cta-band">
+      <h2>Ready to build something real?</h2>
+      <p>Tell us what you're working on. We'll tell you what's possible.</p>
+      <a href="#" class="btn-primary" onclick="showPage('about'); setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),100)">Start a Conversation</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p class="footer-logo">GAVARI<span>.</span>AI</p>
+      <p>© 2026 Gavari AI LLC. Wyoming, USA.</p>
+    </footer>
+
+  </div>
+
+  <!-- ══════════════════ ABOUT PAGE ══════════════════ -->
+  <div id="about" class="page">
+
+    <div class="about-hero">
+      <p class="section-label">About Gavari AI</p>
+      <h1>An AI studio built for<br><em>what's next.</em></h1>
+      <p>Gavari AI LLC is an AI app development and digital strategy firm. We build products that put artificial intelligence to work on problems that matter — for our clients and for the market.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-col">
+        <h2>Who We Are</h2>
+        <p>Gavari AI LLC is a Wyoming-based AI application development and digital strategy company. We specialize in building consumer and enterprise-grade AI products from the ground up — handling everything from product architecture and backend infrastructure to growth systems and go-to-market strategy.</p>
+        <p>We operate as a lean, AI-native studio. Every product we touch is built with artificial intelligence at its core — not as a feature, but as the foundation.</p>
+        <p>Our flagship product, Authentica, is an AI-powered authentication app for sneakers and apparel. It's a direct demonstration of the kind of focused, high-quality product development we bring to every engagement.</p>
+      </div>
+      <div class="about-col">
+        <h2>What We Believe</h2>
+        <p>We believe the best AI products are the ones that solve real problems simply. Not technology for its own sake — AI deployed precisely where it creates genuine value for the person using it.</p>
+        <p>We believe speed and quality aren't opposites. Moving fast with intention, clear architecture, and a strong product foundation produces better outcomes than slow and over-engineered.</p>
+        <p>We believe distribution is as important as the product itself. A great app that nobody knows about isn't a business. We build the growth infrastructure alongside the product — so both are ready on launch day.</p>
+      </div>
+    </div>
+
+    <!-- FOUNDER -->
+    <div class="founder-section">
+      <p class="section-label">Leadership</p>
+      <h2 class="section-title" style="margin-bottom: 48px;">The team behind the work.</h2>
+
+      <div class="founder-card">
+        <div class="founder-avatar">GS</div>
+        <div>
+          <h3 class="founder-name">Gregory St. Clair</h3>
+          <p class="founder-title">Founder & Managing Member</p>
+          <p class="founder-bio">Gregory St. Clair is the founder and Managing Member of Gavari AI LLC. He leads product strategy, business development, marketing, and growth across all of Gavari AI's products and client engagements.</p>
+          <p class="founder-bio">With a background in AI digital strategy and a focus on building systems that scale, Gregory co-founded Authentica — an AI-powered authentication app built to solve the $1 trillion counterfeit goods problem — and leads its commercial strategy from product conception through App Store launch and beyond.</p>
+          <p class="founder-bio">Gavari AI's approach reflects Gregory's operating philosophy: move fast, build with intention, and create products that solve problems people actually have.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALUES -->
+    <div class="values-section">
+      <p class="section-label">Our Values</p>
+      <h2 class="section-title">What drives every decision.</h2>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <p class="value-word">Precision</p>
+          <p class="value-desc">We build with accuracy as a non-negotiable. In AI products especially, getting it right matters more than getting it done.</p>
+        </div>
+        <div class="value-card">
+          <p class="value-word">Velocity</p>
+          <p class="value-desc">Speed is a competitive advantage. We ship, learn, and iterate — without sacrificing the fundamentals.</p>
+        </div>
+        <div class="value-card">
+          <p class="value-word">Honesty</p>
+          <p class="value-desc">We tell clients and users the truth about what's possible, what's ready, and what still needs work.</p>
+        </div>
+        <div class="value-card">
+          <p class="value-word">Impact</p>
+          <p class="value-desc">Every product we build should make something meaningfully better for the person using it. That's the only standard that matters.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-section" id="contact">
+      <p class="section-label">Get in Touch</p>
+      <h2 class="section-title">Let's build something together.</h2>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Work with Gavari AI</h3>
+          <p>Whether you're a founder with an idea, a company looking to build with AI, or a potential partner — we want to hear from you. Tell us what you're working on.</p>
+          <div class="contact-detail">
+            <div class="contact-row">
+              <span class="contact-row-label">Company</span>
+              <span class="contact-row-val">Gavari AI LLC</span>
+            </div>
+            <div class="contact-row">
+              <span class="contact-row-label">Location</span>
+              <span class="contact-row-val">Sheridan, Wyoming, USA</span>
+            </div>
+            <div class="contact-row">
+              <span class="contact-row-label">Phone</span>
+              <span class="contact-row-val">(888) 697-6365</span>
+            </div>
+            <div class="contact-row">
+              <span class="contact-row-label">Website</span>
+              <span class="contact-row-val">gavariai.net</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-info">
+          <h3>Authentica Partnerships</h3>
+          <p>Interested in partnering with Authentica — for brand authentication, reseller platform integration, or enterprise licensing? We'd love to talk.</p>
+          <p>Authentica is currently in App Store review and launching to the public shortly. Early partnership inquiries are welcome.</p>
+          <a href="tel:8886976365" class="btn-primary" style="margin-top: 8px;">Call Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p class="footer-logo">GAVARI<span>.</span>AI</p>
+      <p>© 2026 Gavari AI LLC. Wyoming, USA. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
 </body>
 </html>
